@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Resume Form</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  </head>
+  <body>
+  <div class="main">
+    <div class="ca">
+      <h1>Career Objectives</h1>
+      <select id="career" name="career">
+        <option>select career object </option>
+        <option>To build a long-term career with opportunities for career growth.</option>
+        <option>To solve problems in a creative and effective manner in a challenging position</option>
+      </select>
+    </div>
+    <div class="s1">
+      <h1>Personal Information</h1>
+      <input type="text" name="fname" id="fname" placeholder="Firstname"><br>
+      <input type="text" name="lname" id="lname" placeholder="Lastname"><br>
+      <input type="number" name="mobile" id="mobile" placeholder="Mobile number"><br>
+      <input type="text" name="email" id="email" placeholder="Email id"><br>
+    </div>
+    <div class="s1">
+      <h1>Graduation details</h1>
+      <label for="gcourse">
+        <select id="gcourse" name="Graduation">
+          <option>select course</option>
+          <option>B.Tech</option>
+          <option>Bsc</option>
+        </select>
+              </label><br>
+            <label for="gbranch">
+                <select id="gbranch" name="graduation">
+                  <option>select branch</option>
+              <option>CSE</option>
+              <option>IT</option>
+              <option>EEE</option>
+              <option>ECE</option>
+              </select>
+          </label><br>
+          <label for="ginst">
+          <input type="text" name="ginst" id="ginst" placeholder="institute">
+          </label><br>
+          <label for="gyear">
+           <input type="text" name="gyear" id="gyear" placeholder="year of passing">
+           </label><br>
+           <label for="gper">
+            <input type="text" name="gper" id="gper" placeholder="percentage">
+           </label>
+          </div>
+
+          <div class="s1">
+            <h1>Intermidiate/diploma</h1>
+            <label for="icourse">
+              <select id="icourse" name="Graduation">
+                <option>select course</option>
+                <option>Intermediate</option>
+                <option>Diploma</option>
+              </select>
+                  </label><br>
+                  <label for="ibranch">
+                    <select id="ibranch" name="graduation">
+                  <option>select branch</option>
+                    <option>MPC</option>
+                    <option>BiPC</option>
+                    <option>CEC</option>
+                    <option>HEC</option>
+                    </select>
+                </label><br>
+                <label for="iinst">
+                <input type="text" name="iinst" id="iinst" placeholder="institute">
+                </label><br>
+                <label for="iyear">
+                 <input type="text" name="iyear" id="iyear" placeholder="year of passing">
+                 </label><br>
+                 <label for="iper">
+                  <input type="text" name="iper" id="iper" placeholder="percentage">
+                 </label>
+               </div>
+
+               <div class="s1">
+                 <h1>SSC</h1>
+                 <label for="scourse">
+                   <select id="scourse" name="Graduation">
+                     <option>select course</option>
+                     <option>SSC</option>
+                     <option>CBSE</option>
+                       </label><br>
+                       </select>
+                     </label><br>
+                     <label for="sinst">
+                     <input type="text" name="sinst" id="sinst" placeholder="institute">
+                     </label><br>
+                     <label for="syear">
+                      <input type="text" name="syear" id="syear" placeholder="year of passing">
+                      </label><br>
+                      <label for="sper">
+                       <input type="text" name="sper" id="sper" placeholder="percentage">
+                      </label>
+
+          </div>
+          <button type="button" name="button" onclick="submitdata()">SUBMIT</button>
+  </div>
+  </body>
+</html>
+<!--javascript  -->
+<script type="text/javascript">
+function submitdata(){
+  var name;
+  var lname;
+  var mobile;
+  var email;
+  name=document.getElementById("fname").value;
+  lname=document.getElementById("lname").value;
+  mobile=document.getElementById("mobile").value;
+  email=document.getElementById("email").value;
+
+  var career=document.getElementById("career").value;
+
+  var gcourse=document.getElementById("gcourse").value;
+  var gbranch=document.getElementById("gbranch").value;
+  var ginst=document.getElementById("ginst").value;
+  var gyear=document.getElementById("gyear").value;
+  var gper=document.getElementById("gper").value;
+
+  var icourse=document.getElementById("icourse").value;
+  var ibranch=document.getElementById("ibranch").value;
+  var iinst=document.getElementById("iinst").value;
+  var iyear=document.getElementById("iyear").value;
+  var iper=document.getElementById("iper").value;
+
+  var scourse=document.getElementById("scourse").value;
+  var sinst=document.getElementById("sinst").value;
+  var syear=document.getElementById("syear").value;
+  var sper=document.getElementById("sper").value;
+//indexed DB
+var request;
+var open;
+var store;
+var result;
+var tx;
+var indexedDB=window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+request=indexedDB.open("mydatabase",1);
+// 1 is version
+// on error
+ request.onerror=function(e){
+// e is event,it is here an anonymous function
+  console.log("error"+e);
+  }
+  // onupgradeneeded
+  request.onupgradeneeded=function(e){
+    result=e.target.result;
+    store=result.createObjectStore("resume",{keyPath:"name"});
+    }
+    // onsuccess
+    request.onsuccess=function(e){
+      result=e.target.result;
+      tx=result.transaction("resume",'readwrite');
+      store=tx.objectStore("resume");
+      store.put(
+        {
+        career:career,
+        name:name,
+        lname:lname,
+        mobile:mobile,
+        email:email,
+education:[
+  {
+    course:gcourse,
+    branch:gbranch,
+    institute:ginst,
+    year:gyear,
+    percentage:gper
+  },
+  {
+    course:icourse,
+    branch:ibranch,
+    institute:iinst,
+    year:iyear,
+    percentage:iper
+  },
+  {
+    course:scourse,
+    institute:sinst,
+    year:syear,
+    percentage:sper
+}
+]
+});
+  window.open("index.html");
+    }
+  }
+</script>
